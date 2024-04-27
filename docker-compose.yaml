@@ -1,0 +1,24 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - env_files/app.env
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - env_files/db.env
+  keycloak:
+    container_name: keycloak
+    build:
+      dockerfile: ./Dockerfile.keycloak
+    command: ["start-dev"]
+    ports:
+      - "8081:8080"
+    env_file:
+      - env_files/keycloak.env
+    depends_on:
+      - db
